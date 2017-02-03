@@ -48,25 +48,29 @@ export class ZipPage {
        data => {
          if (data.results != undefined)
          {
-           this.matchingRecords = data.results;
+           this.matchingRecords = data.results.cities;
          }
-         console.log(data.results);
+
+         if (this.matchingRecords == undefined)
+         {
+             this.popupMessage('Sorry, no results.');
+         }
+         else
+         {
+            let cityNames = [];
+            for(let record of this.matchingRecords){
+              cityNames.push(record.city);
+            }
+           this.popupMessage('results for zip ' + this.zipEntry + ' is ' + cityNames.join(','));
+         }
        },
        err => {
          console.log(err);
        },
        () => console.log('Zip search completed')
      );
-       
 
-    if (this.matchingRecords == undefined)
-    {
-        this.popupMessage('Sorry, no results.');
-    }
-    else
-    {
-      this.popupMessage('results for zip ' + this.zipEntry + ' is ' + this.matchingRecords[0]);
-    }
+
   }
 
     popupMessage(alertMessage:string) {
